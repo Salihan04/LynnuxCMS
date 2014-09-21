@@ -28,6 +28,7 @@ function redirectUser($user) {
         }
         else if($roleName == "Operator"){
             echo('Operator');
+            header('Location: /operator');
         } 
     }
     else{
