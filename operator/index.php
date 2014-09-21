@@ -49,6 +49,9 @@ for ($i = 0; $i < count($results); $i++) {
 
 	echo('<li>'.$object->get('reporter')->get('username').'</li>');
 	echo('<li>'.getProperDateFormat($object->getCreatedAt()).'</li>');
+
+	
+	
 	echo('</ul>');
 
 	echo('</li>');

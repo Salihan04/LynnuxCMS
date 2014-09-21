@@ -25,6 +25,7 @@ function redirectUser($user) {
 
         if($roleName == "CallCenter"){
             echo('CallCenter');
+            header('Location: /CallCenter');
         }
         else if($roleName == "Operator"){
             echo('Operator');
