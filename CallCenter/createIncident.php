@@ -17,7 +17,7 @@
 	<head>
 
 		<!-- Bootstrap -->
-		<link href="/LynnuxCMS/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
 		
 	</head>
 	<body>
