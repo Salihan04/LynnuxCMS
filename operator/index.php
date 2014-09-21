@@ -43,15 +43,37 @@ for ($i = 0; $i < count($results); $i++) {
 	echo('<ul>');
 	echo('<li>'.$object->get('description').'</li>');
 	echo('<li>'.$object->get('status').'</li>');
-	echo('<li>'.$object->get('location')->getLatitude().'</li>');
+	echo('<li>'.$object->get('location')->getLatitude().','.$object->get('location')->getLongitude().'</li>');
 
 	$object->get('reporter')->fetch();
 
 	echo('<li>'.$object->get('reporter')->get('username').'</li>');
 	echo('<li>'.getProperDateFormat($object->getCreatedAt()).'</li>');
 
+	$queryAssignResource = new ParseQuery("AssignResource");
+	$queryAssignResource->equalTo("incident", $object);
+	$assignResourceResults = $queryAssignResource->find();
+
+	
+	if(count($assignResourceResults)>0){
+		echo('<li>'.'Resources:'.'</li>');
+
+		echo('<ul>');
+		for($i=0;$i<count($assignResourceResults);$i++){
+			$assignResourceResults[$i]->get('resource')->fetch();
+			echo('<li>'.$assignResourceResults[$i]->get('resource')->get('name').'</li>');
+		}
+		echo('</ul>');
+	}
+	else{
+		?>
+<li>no resource yet</li>
+<button type='button' onclick="location.href = '\assignResource.php'">assign resource</button>
+		<?php
+	}
 	
 	
+
 	echo('</ul>');
 
 	echo('</li>');
