@@ -1,16 +1,38 @@
 <?php
 
-	require '../vendor/autoload.php';
+require '../vendor/autoload.php';
+
+use Parse\ParseClient;
+use Parse\ParseObject;
+use Parse\ParseQuery;
  
-	use Parse\ParseClient;
-	 
-	ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
+ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
 
-	use Parse\ParseObject;
-	use Parse\ParseQuery;
+$query = new ParseQuery("AssistanceType");
+$assistanceTypes = $query->find();
 
-	$query = new ParseQuery("AssistanceType");
-	$assistanceTypes = $query->find();
+$method = $_SERVER['REQUEST_METHOD'];
+
+if($method == 'POST') {
+
+	$incident = ParseObject::create('Incident');
+	$incident->set('name', $_POST['incidentName']);
+	$incident->set('description', $_POST['incidentDescription']);
+	$incident->set('priority', intval($_POST['priority']));
+	$incident->save();
+	
+	$reporter = ParseObject::create('Reporter');
+	$reporter->set('name', $_POST['name']);
+	$reporter->set('mobile_no', $_POST['mobileNo']);
+	$reporter->set('NRIC', $_POST['NRIC']);
+	$reporter->set('address', $_POST['address']);
+	$reporter->set('typeOfAssistance', $_POST['typeOfAssistance']);
+	$reporter->set('incident', $incident);
+	$reporter->save();
+
+	echo("Saved successfully");
+}
+else if($method == 'GET') {
 ?>
 
 <html>
@@ -50,6 +72,15 @@
 									<div class="input-group">
 										<span class="input-group-addon">*</span>
 										 <input type="text" class="form-control" id="txtReporterName" name="name" placeholder="Name" required="required"/>
+									</div>
+
+									<br />
+
+									<!-- txtNRIC -->
+									<label class="col-sm-4 control-label" for="txtNRIC">NRIC</label>
+									<div class="input-group">
+										<span class="input-group-addon">*</span>
+										 <input type="text" class="form-control" id="txtNRIC" name="NRIC" placeholder="txtNRIC" required="required">
 									</div>
 
 									<br />
@@ -100,7 +131,7 @@
 								<label class="col-sm-4 control-label" for="txtIncidentName">Incident Name</label>
 								<div class="input-group">
 									<span class="input-group-addon">*</span>
-									 <input type="text" class="form-control" id="txtIncidentName" name="name" placeholder="Incident Name" required="required"/>
+									 <input type="text" class="form-control" id="txtIncidentName" name="incidentName" placeholder="Incident Name" required="required"/>
 								</div>
 
 								<br />
@@ -109,7 +140,7 @@
 								<label class="col-sm-4 control-label" for="txtIncidentDescription">Incident Description</label>
 								<div class="input-group">
 									<span class="input-group-addon">*</span>
-									 <input type="text" class="form-control" id="txtIncidentDescription" name="name" placeholder="Incident Description" required="required"/>
+									 <input type="text" class="form-control" id="txtIncidentDescription" name="incidentDescription" placeholder="Incident Description" required="required"/>
 								</div>
 
 								<br />
@@ -118,20 +149,12 @@
 								<label class="col-sm-4 control-label" for="cboPriority">Priority</label>
 								<div class="input-group">
 									<span class="input-group-addon">*</span>
-									 <input type="text" class="form-control" id="cboPriority" name="name" placeholder="Priority" required="required"/>
+									 <input type="text" class="form-control" id="cboPriority" name="priority" placeholder="Priority" required="required"/>
 								</div>
 
 								<br />
 
-								<!-- cboPriority -->
-								<label class="col-sm-4 control-label" for="cboPriority">Priority</label>
-								<div class="input-group">
-									<span class="input-group-addon">*</span>
-									 <input type="text" class="form-control" id="cboPriority" name="name" placeholder="Priority" required="required"/>
-								</div>
-
-								<br />
-
+								<input type="submit" />
 
 							</div>
 					</form>
@@ -147,3 +170,7 @@
 	    <script src="js/bootstrap.min.js"></script>
 	</body>	
 </html>
+
+<?php
+}
+?>
