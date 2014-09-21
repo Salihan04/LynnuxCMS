@@ -50,7 +50,7 @@ if($method == 'GET'){
         ?>
 
 <!-- create a form -->
-<form action="/" method="post" id="login-form">
+<form action="/login.php" method="post" id="login-form">
 
     <label class="required">Username:</label> 
     <input id="username" maxlength="254" name="username" type="text">
