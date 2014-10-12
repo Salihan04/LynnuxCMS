@@ -107,7 +107,6 @@ for ($i = 0; $i < count($results); $i++) {
 
   <style>
   #map_canvas {
-    width: 700px;
     height: 500px;
     background-color: #CCC;
   }
@@ -137,7 +136,8 @@ for ($i = 0; $i < count($results); $i++) {
       var marker = new google.maps.Marker({
         position: TampinesLatLng,
         map: map,
-        title: 'Tampines'
+        title: 'Tampines',
+        width: window.innerWidth
       });
 
       google.maps.event.addListener(marker, 'click', function() {
