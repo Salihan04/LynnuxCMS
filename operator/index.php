@@ -37,17 +37,37 @@ function getProperDateFormat($value){
 //show a list of incident
 for ($i = 0; $i < count($results); $i++) { 
 	$object = $results[$i];
+	$id = '';
+	$name = '';
+	$description = '';
+	$status = '';
+	$location = '';
+	$reporter = '';
+
+	$name = $object->get('name');
+	$id = $object->getObjectId();
+	$description = $object->get('description');
+	$status = $object->get('status');
+
+	if($object->get('location')!=null){
+		$location = $object->get('location');
+		$location = $location->getLatitude().','.$location->getLongitude();
+	}
+
+	if($object->get('reporter')!=null){
+		$object->get('reporter')->fetch();
+		$reporter = $object->get('reporter')->get('username');
+	}
+	
 	echo('<li>');
-	echo($object->getObjectId() . ' - ' . $object->get('name'));
+	echo( $id . ' - ' . $name);
 
 	echo('<ul>');
-	echo('<li>'.$object->get('description').'</li>');
-	echo('<li>'.$object->get('status').'</li>');
-	echo('<li>'.$object->get('location')->getLatitude().','.$object->get('location')->getLongitude().'</li>');
+	echo('<li>'.$description.'</li>');
+	echo('<li>'.$status.'</li>');
+	echo('<li>'.$location.'</li>');
 
-	$object->get('reporter')->fetch();
-
-	echo('<li>'.$object->get('reporter')->get('username').'</li>');
+	echo('<li>'.$reporter.'</li>');
 	echo('<li>'.getProperDateFormat($object->getCreatedAt()).'</li>');
 
 	$queryAssignResource = new ParseQuery("AssignResource");
