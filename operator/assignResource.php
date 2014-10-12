@@ -13,7 +13,63 @@ use Parse\ParseObject;
 use Parse\ParseQuery;
 
 //remember to check user login
+$method = $_SERVER['REQUEST_METHOD'];
+$incidentId = null;
+$incident = null;
 
+$incidentHTML = '';
+$resourceHTML = '';
+
+$saveSuccess = false;
+
+if($method == 'POST') {
+
+  try{
+    $assignedResource = ParseObject::create('AssignResource');
+
+    $incident = ParseObject::create('Incident',$_POST['incident'],true);
+    $resource = ParseObject::create('Resource',$_POST['resource'],true);
+
+    $assignedResource->set('incident', $incident);
+    $assignedResource->set('resource', $resource);
+    $assignedResource->set('quantity', 1);
+    $assignedResource->save();
+    $saveSuccess = true;
+
+  }catch(Exception $e){
+    $saveSuccess = false;
+  }
+}
+else if($method == 'GET'){
+  if(isset($_GET['incident'])){
+    $incidentId = $_GET['incident'];
+    
+    //get the incident from parse
+    $query = new ParseQuery("Incident");
+    $query->equalTo("objectId",$incidentId);
+    $results = $query->find();
+
+    $incident = $results[0];
+
+  }
+  if($incident==null){
+
+    $query = new ParseQuery("Incident");
+    $results = $query->find();
+
+    for ($i = 0; $i < count($results); $i++) { 
+      $object = $results[$i];
+      $incidentHTML .= '<option value="'.$object->getObjectId().'">'.$object->get("name").'</option>';
+    }
+  }
+
+  $query = new ParseQuery("Resource");
+  $resources = $query->find();
+  for ($i = 0; $i < count($resources); $i++) { 
+    $object = $resources[$i];
+    $resourceHTML .= '<option value="'.$object->getObjectId().'">'.$object->get("name").'</option>';
+  }
+}
 ?>
 <html lang="en">
     <head>
@@ -72,7 +128,7 @@ use Parse\ParseQuery;
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Overview</a></li>
+            <li class="active"><a href="/operator/index.php">Overview</a></li>
             <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Reports</a></li>
             <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Analytics</a></li>
             <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Export</a></li>
@@ -94,26 +150,46 @@ use Parse\ParseQuery;
           <h1 class="page-header">Create Incident</h1>
 
           <div class="col-md-15">
+
+            <?php
+            if($method == 'GET'){
+            ?>
+
             <form role="form" class="form-horizontal" method="post" action="assignResource.php">
               <div class="form-group">
 
                 <div class="panel panel-info">
                   <div class="panel-body">
                     <!-- cboTypeOfAssistance -->
-                    <label class="col-sm-2 control-label" for="cboTypeOfAssistance">Incident</label>
+                    <label class="col-sm-2 control-label" for="incident">Incident</label>
                     <div class="input-group">
-                      <select class="form-control" id="cboTypeOfAssistance" name="typeOfAssistance" required="required">                    
-                        <option value="abc">abc</option>
+                      <?php
+                      if($incident!=null){
+                      ?>
+                        <label class="control-label"><?php echo($incident->get("name"));?></label>
+                        <?php echo('<input type="hidden" class="form-control" value="'.$incident->getObjectId().'" id="incident" name="incident" required="required"/>');?>
+                      <?php
+                      }
+                      else{
+
+                      ?>
+                      <select class="form-control" id="incident" name="incident" required="required">                    
+                        <?php echo($incidentHTML);?>
                       </select>
+
+                      <?php
+                      }
+                      ?>
+                    
                     </div>
 
                     <br />
 
                     <!-- cboTypeOfAssistance -->
-                    <label class="col-sm-2 control-label" for="cboTypeOfAssistance">Resource</label>
+                    <label class="col-sm-2 control-label" for="resource">Resource</label>
                     <div class="input-group">
-                      <select class="form-control" id="cboTypeOfAssistance" name="typeOfAssistance" required="required">
-                        <option value="abc">abc</option>
+                      <select class="form-control" id="resource" name="resource" required="required">   
+                        <?php echo($resourceHTML);?>
                       </select>
                     </div>
                   </div>
@@ -121,6 +197,17 @@ use Parse\ParseQuery;
                 <input type="submit" />
               </div>
             </form>
+            
+            
+            <?php  
+            }
+            else{
+              if($saveSuccess){
+                echo('<p>Resouce has been assigned</p>');
+              }
+            }
+            ?>
+
           </div>
         <div class="col-md-2"></div>
       

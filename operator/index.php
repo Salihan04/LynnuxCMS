@@ -13,6 +13,7 @@ use Parse\ParseObject;
 use Parse\ParseQuery;
 
 //remember to check user login
+set_time_limit(1000);
 
 $query = new ParseQuery("Incident");
 $results = $query->find();
@@ -28,6 +29,7 @@ $tableHTML = '';
 
 //show a list of incident
 for ($i = 0; $i < count($results); $i++) { 
+	
   $object = $results[$i];
   $id = '';
   $name = '';
@@ -65,13 +67,15 @@ for ($i = 0; $i < count($results); $i++) {
 
   $tableHTML .= '<td>';
   if(count($assignResourceResults)>0){
-    for($i=0;$i<count($assignResourceResults);$i++){
-      $assignResourceResults[$i]->get('resource')->fetch();
-      $tableHTML .= $assignResourceResults[$i]->get('resource')->get('name').'&nbsp';
+    for($j=0;$j<count($assignResourceResults);$j++){
+      $assignResourceResults[$j]->get('resource')->fetch();
+      $tableHTML .= $assignResourceResults[$j]->get('resource')->get('name').'&nbsp';
     }
   }
   else{
-    $tableHTML .= '<button type="button" onclick="location.href = \'\assignResource.php\'">assign resource</button>';
+    $tableHTML .= '<button type="button" onclick="location.href = \'\assignResource.php';
+	$tableHTML .= '?incident='.$id;
+    $tableHTML .= '\'">assign resource</button>';
   }
   $tableHTML .= '</td>'; 
 
