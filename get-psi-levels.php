@@ -9,6 +9,7 @@ class PSIGrabber{
 		self::$DOM = new DOMDocument();
 		self::$data = array();
 		self::fetchWeb();
+		//self::refreshWeb();
 	}
 
     function fetchWeb(){//i did this so that it wont spam the website
@@ -196,8 +197,9 @@ class PSIGrabber{
 
 //////this is how you grab in your codes
 $instance = new PSIGrabber();
-$data = PSIGrabber::grabData();
+$data = $instance::grabData();
 foreach ($data as $key => $value) {
 	echo $key . ': ' . $value . '<br>';
 }
+
 ?>
