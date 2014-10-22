@@ -2,7 +2,7 @@
 	<head>
 
 		<!-- Bootstrap -->
-		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/bootstrap.min.css" rel="stylesheet" />
 		
 	</head>
 	<body>
@@ -21,7 +21,9 @@
 	 				
 	 			</div>
 	 			<div class="col-md-4">
-	 				<button class="btn btn-primary btn-lg">Create Incident</button>
+	 				<form method="get" action="createIncident.php"> 
+	 					<button type="submit" class="btn btn-primary btn-lg">Create Incident</button>
+	 				</form>
 	 			</div>
 	 			<div class="col-md-4">
 	 			
