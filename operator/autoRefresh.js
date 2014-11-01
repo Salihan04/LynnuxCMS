@@ -14,7 +14,6 @@ Initializer = {
 			tbody.setAttribute("id","incident_body")
 			query.find({
 				success: function(incidents) {
-					console.log("number of incident:"+incidents.length);
 					// The object was retrieved successfully.
 					for (var i = 0; i < incidents.length; i++) { 
 						var incident = incidents[i];
@@ -55,10 +54,10 @@ Initializer = {
 						if(reporter!=null){
 							tdReporter.setAttribute("id","reporter"+reporter.id);
 						}
-						
 
 						var tdCreated = document.createElement("td");
 						tdCreated.innerHTML = incident.createdAt;
+						console.log(incident.createdAt);
 
 						tr.appendChild(tdId);
 						tr.appendChild(tdName);
@@ -85,7 +84,6 @@ Initializer = {
 
 						promise = promise.then((function(j) {
 					        return function innerFunction(results) { // inner function
-									console.log(j);
 									if(results.length>0){
 										
 										for(var k=0;k<results.length;k++){
@@ -94,7 +92,6 @@ Initializer = {
 												return function innerFunction(result){
 													var html = "";
 													html += results[kFake].get("resource").get("name") + "&nbsp";
-													console.log(results[kFake]);
 													document.getElementById("resource"+j).innerHTML += html;
 												}
 											})(k));
