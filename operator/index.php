@@ -13,6 +13,13 @@ $cache = phpFastCache();
 
 $tableHTML = $cache->get("incident");
 
+function getProperDateFormat($value){
+  $dateFormatString = 'Y-m-d\TH:i:s.u';
+  $date = date_format($value, $dateFormatString);
+  $date = substr($date, 0, -3) . 'Z';
+  return $date;
+}
+
 if($tableHTML == null) {
   ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
 
@@ -93,7 +100,8 @@ if($tableHTML == null) {
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="./template_files/ie-emulation-modes-warning.js"></script>
-
+    <script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+    <script src="autoRefresh.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -147,7 +155,7 @@ if($tableHTML == null) {
 
 </head>
 
-  <body>
+  <body onload="Initializer.init();" >
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -205,7 +213,7 @@ if($tableHTML == null) {
 
           <h2 class="sub-header">Incident</h2>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="incident_table">
               <thead>
                 <tr>
                   <th>Id</th>
@@ -218,7 +226,7 @@ if($tableHTML == null) {
                   <th>Created at</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="incident_body">
                 <?php
                   echo($tableHTML);
                 ?>
