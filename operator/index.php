@@ -341,53 +341,15 @@ for ($i = 0; $i < count($results); $i++) {
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">CMS Operator</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Dashboard</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Settings</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Profile</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Help</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-        </div>
-      </div>
-    </div>
+    <?php
+      include('menu/operator_top_menu.php');
+    ?>
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Overview</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Reports</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Analytics</a></li>
-            <li><a href="file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap_files/Dashboard%20Template%20for%20Bootstrap.htm">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
+        <?php
+          include('menu/operator_side_menu.php');
+        ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Singapore Map</h1>
 
