@@ -2,89 +2,81 @@
 <!-- saved from url=(0071)file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap.htm -->
 <?php
 
+include("../phpfastcache/phpfastcache.php");
 require '../vendor/autoload.php';
-
 use Parse\ParseClient;
-
-ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
-
-
 use Parse\ParseObject;
 use Parse\ParseQuery;
 
-//remember to check user login
-set_time_limit(1000);
+phpFastCache::setup("storage","auto");
+$cache = phpFastCache();
 
-$query = new ParseQuery("Incident");
-$results = $query->find();
+$tableHTML = $cache->get("incident");
 
-function getProperDateFormat($value){
-  $dateFormatString = 'Y-m-d\TH:i:s.u';
-  $date = date_format($value, $dateFormatString);
-  $date = substr($date, 0, -3) . 'Z';
-  return $date;
-}
+if($tableHTML == null) {
+  ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
 
-$tableHTML = '';
+  $query = new ParseQuery("Incident");
+  $results = $query->find();
 
-//show a list of incident
-for ($i = 0; $i < count($results); $i++) { 
-	
-  $object = $results[$i];
-  $id = '';
-  $name = '';
-  $description = '';
-  $status = '';
-  $location = '';
-  $reporter = '';
+  //show a list of incident
+  for ($i = 0; $i < count($results); $i++) { 
+    $object = $results[$i];
+    $id = '';
+    $name = '';
+    $description = '';
+    $status = '';
+    $location = '';
+    $reporter = '';
 
-  $name = $object->get('name');
-  $id = $object->getObjectId();
-  $description = $object->get('description');
-  $status = $object->get('status');
+    $name = $object->get('name');
+    $id = $object->getObjectId();
+    $description = $object->get('description');
+    $status = $object->get('status');
 
-  if($object->get('location')!=null){
-    $location = $object->get('location');
-    $location = $location->getLatitude().','.$location->getLongitude();
-  }
-
-  if($object->get('reporter')!=null){
-    $object->get('reporter')->fetch();
-    $reporter = $object->get('reporter')->get('username');
-  }
-  
-  $tableHTML .= '<tr>';
-  $tableHTML .= '<td>'.$id.'</td>';
-  $tableHTML .= '<td>'.$name.'</td>';
-  $tableHTML .= '<td>'.$status.'</td>';
-  $tableHTML .= '<td>'.$description.'</td>';
-  $tableHTML .= '<td>'.$location.'</td>';
-  
-  
-  $queryAssignResource = new ParseQuery("AssignResource");
-  $queryAssignResource->equalTo("incident", $object);
-  $assignResourceResults = $queryAssignResource->find();
-
-  $tableHTML .= '<td>';
-  if(count($assignResourceResults)>0){
-    for($j=0;$j<count($assignResourceResults);$j++){
-      $assignResourceResults[$j]->get('resource')->fetch();
-      $tableHTML .= $assignResourceResults[$j]->get('resource')->get('name').'&nbsp';
+    if($object->get('location')!=null){
+      $location = $object->get('location');
+      $location = $location->getLatitude().','.$location->getLongitude();
     }
-  }
-  else{
-    $tableHTML .= '<button type="button" onclick="location.href = \'\assignResource.php';
-	$tableHTML .= '?incident='.$id;
-    $tableHTML .= '\'">assign resource</button>';
-  }
-  $tableHTML .= '</td>'; 
 
-  $tableHTML .= '<td>'.$reporter.'</td>';
-  $tableHTML .= '<td>'.getProperDateFormat($object->getCreatedAt()).'</td>';
+    if($object->get('reporter')!=null){
+      $object->get('reporter')->fetch();
+      $reporter = $object->get('reporter')->get('username');
+    }
+    
+    $tableHTML .= '<tr>';
+    $tableHTML .= '<td>'.$id.'</td>';
+    $tableHTML .= '<td>'.$name.'</td>';
+    $tableHTML .= '<td>'.$status.'</td>';
+    $tableHTML .= '<td>'.$description.'</td>';
+    $tableHTML .= '<td>'.$location.'</td>';
+    
+    
+    $queryAssignResource = new ParseQuery("AssignResource");
+    $queryAssignResource->equalTo("incident", $object);
+    $assignResourceResults = $queryAssignResource->find();
 
-  $tableHTML .= '</tr>';
+    $tableHTML .= '<td>';
+    if(count($assignResourceResults)>0){
+      for($j=0;$j<count($assignResourceResults);$j++){
+        $assignResourceResults[$j]->get('resource')->fetch();
+        $tableHTML .= $assignResourceResults[$j]->get('resource')->get('name').'&nbsp';
+      }
+    }
+    else{
+      $tableHTML .= '<button type="button" onclick="location.href = \'\assignResource.php';
+      $tableHTML .= '?incident='.$id;
+      $tableHTML .= '\'">assign resource</button>';
+    }
+    $tableHTML .= '</td>'; 
+
+    $tableHTML .= '<td>'.$reporter.'</td>';
+    $tableHTML .= '<td>'.getProperDateFormat($object->getCreatedAt()).'</td>';
+
+    $tableHTML .= '</tr>';
+  }
+  $cache->set("incident", $tableHTML,600); //cache 10 minute
 }
-
 ?>
 <html lang="en">
     <head>
