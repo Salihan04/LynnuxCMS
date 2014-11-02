@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!-- saved from url=(0071)file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap.htm -->
+<?php
+
+require '../util/PSIGrabber.php';
+
+// Getting PSI data
+$psi_grabber = new PSIGrabber();
+$psi_data = PSIGrabber::grabData();
+
+?>
 <html lang="en">
     <head>
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
