@@ -1,93 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0071)file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap.htm -->
-<?php
-
-require '../vendor/autoload.php';
-require '../util/PSIGrabber.php';
-
-use Parse\ParseClient;
-use Parse\ParseObject;
-use Parse\ParseQuery;
-
-// Getting PSI data
-$psi_grabber = new PSIGrabber();
-$psi_data = PSIGrabber::grabData();
-
-ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
-//remember to check user login
-set_time_limit(1000);
-
-$query = new ParseQuery("Incident");
-$results = $query->find();
-
-function getProperDateFormat($value){
-  $dateFormatString = 'Y-m-d\TH:i:s.u';
-  $date = date_format($value, $dateFormatString);
-  $date = substr($date, 0, -3) . 'Z';
-  return $date;
-}
-
-$tableHTML = '';
-
-//show a list of incident
-for ($i = 0; $i < count($results); $i++) { 
-	
-  $object = $results[$i];
-  $id = '';
-  $name = '';
-  $description = '';
-  $status = '';
-  $location = '';
-  $reporter = '';
-
-  $name = $object->get('name');
-  $id = $object->getObjectId();
-  $description = $object->get('description');
-  $status = $object->get('status');
-
-  if($object->get('location')!=null){
-    $location = $object->get('location');
-    $location = $location->getLatitude().','.$location->getLongitude();
-  }
-
-  if($object->get('reporter')!=null){
-    $object->get('reporter')->fetch();
-    $reporter = $object->get('reporter')->get('username');
-  }
-  
-  $tableHTML .= '<tr>';
-  $tableHTML .= '<td>'.$id.'</td>';
-  $tableHTML .= '<td>'.$name.'</td>';
-  $tableHTML .= '<td>'.$status.'</td>';
-  $tableHTML .= '<td>'.$description.'</td>';
-  $tableHTML .= '<td>'.$location.'</td>';
-  
-  
-  $queryAssignResource = new ParseQuery("AssignResource");
-  $queryAssignResource->equalTo("incident", $object);
-  $assignResourceResults = $queryAssignResource->find();
-
-  $tableHTML .= '<td>';
-  if(count($assignResourceResults)>0){
-    for($j=0;$j<count($assignResourceResults);$j++){
-      $assignResourceResults[$j]->get('resource')->fetch();
-      $tableHTML .= $assignResourceResults[$j]->get('resource')->get('name').'&nbsp';
-    }
-  }
-  else{
-    $tableHTML .= '<button type="button" onclick="location.href = \'\assignResource.php';
-	$tableHTML .= '?incident='.$id;
-    $tableHTML .= '\'">assign resource</button>';
-  }
-  $tableHTML .= '</td>'; 
-
-  $tableHTML .= '<td>'.$reporter.'</td>';
-  $tableHTML .= '<td>'.getProperDateFormat($object->getCreatedAt()).'</td>';
-
-  $tableHTML .= '</tr>';
-}
-
-?>
 <html lang="en">
     <head>
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
@@ -103,7 +14,8 @@ for ($i = 0; $i < count($results); $i++) {
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="./template_files/ie-emulation-modes-warning.js"></script>
-
+    <script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+    <script src="autoRefresh.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -339,7 +251,7 @@ for ($i = 0; $i < count($results); $i++) {
 
 </head>
 
-  <body>
+  <body onload="Initializer.init();" >
 
     <?php
       include('menu/operator_top_menu.php');
@@ -359,7 +271,7 @@ for ($i = 0; $i < count($results); $i++) {
 
           <h2 class="sub-header">Incident</h2>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="incident_table">
               <thead>
                 <tr>
                   <th>Id</th>
@@ -372,10 +284,7 @@ for ($i = 0; $i < count($results); $i++) {
                   <th>Created at</th>
                 </tr>
               </thead>
-              <tbody>
-                <?php
-                  echo($tableHTML);
-                ?>
+              <tbody id="incident_body">
               </tbody>
             </table>
           </div>
