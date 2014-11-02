@@ -200,6 +200,60 @@ final class ParseClient
     return $output;
   }
 
+
+  public static function log($log_string){
+  //print $log_string . "<br>";
+  // file_put_contents('/tmp/parsecms.log', $log_string, FILE_APPEND);
+  }
+
+  public static function _request($method, $relativeUrl, $sessionToken = null, $data = null, $useMasterKey = false) {
+    if ($data === '[]') {
+      $data = '{}';
+    }
+    self::assertParseInitialized();
+    $headers = self::_getRequestHeaders($sessionToken, $useMasterKey);
+  self::log("Headers are " . print_r($headers, true));
+
+  // Setup options for http connection
+  $opts = [ 'http' => [ 'method' => $method ] ];
+    
+  $url = self::HOST_NAME . $relativeUrl;
+  
+  if ($method === 'GET' && !empty($data)) {
+    $url .= '?' . http_build_query($data);
+  }
+
+  if ($method === 'POST' || $method === 'PUT') {
+        $headers[] = 'Content-Type: application/json';
+    $opts['http']['content'] = $data;
+  }
+
+
+  $opts['http']['header'] = implode("\n", $headers);
+  
+  
+  self::log("opts are " . print_r($opts, true));
+  self::log("Calling url: $method $url");
+  
+  
+  $context = stream_context_create($opts);
+  $result = file_get_contents($url, false, $context);
+  self::log("Result is $result");
+  
+  $decoded = json_decode($result, true);
+  if (isset($decoded['error'])) {
+      throw new ParseException($decoded['error'],
+        isset($decoded['code']) ? $decoded['code'] : 0
+      );
+    }
+    
+  return $decoded; 
+  
+  
+    
+  }
+
+
   /**
    * Parse\Client::_request, internal method for communicating with Parse.
    *
@@ -213,14 +267,20 @@ final class ParseClient
    * @throws \Exception
    * @ignore
    */
-  public static function _request($method, $relativeUrl, $sessionToken = null,
+  public static function _requestXX($method, $relativeUrl, $sessionToken = null,
                                   $data = null, $useMasterKey = false)
   {
+  $log_string = "Data  for $method $relativeUrl is " . urldecode($data);
+  self::log($log_string);
+  if (in_array($method, array('GET', 'POST', 'PUT'))){
+    return self::_requestXX($method, $relativeUrl, $sessionToken, $data, $useMasterKey);
+  }
     if ($data === '[]') {
       $data = '{}';
     }
     self::assertParseInitialized();
     $headers = self::_getRequestHeaders($sessionToken, $useMasterKey);
+  self::log("Headers is " . print_r($headers, true));
 
     $url = self::HOST_NAME . $relativeUrl;
     if ($method === 'GET' && !empty($data)) {
@@ -229,6 +289,7 @@ final class ParseClient
     $rest = curl_init();
     curl_setopt($rest, CURLOPT_URL, $url);
     curl_setopt($rest, CURLOPT_RETURNTRANSFER, 1);
+
     if ($method === 'POST') {
       $headers[] = 'Content-Type: application/json';
       curl_setopt($rest, CURLOPT_POST, 1);
@@ -243,7 +304,13 @@ final class ParseClient
       curl_setopt($rest, CURLOPT_CUSTOMREQUEST, $method);
     }
     curl_setopt($rest, CURLOPT_HTTPHEADER, $headers);
+
+  self::log("Calling url: $url");
+  self::log("Rest " . print_r($rest,true));
     $response = curl_exec($rest);
+
+  self::log("Response is $response");
+
     $status = curl_getinfo($rest, CURLINFO_HTTP_CODE);
     $contentType = curl_getinfo($rest, CURLINFO_CONTENT_TYPE);
     if (curl_errno($rest)) {
@@ -280,7 +347,6 @@ final class ParseClient
   /**
    * ParseClient::getStorage, will return the storage object used for
    * persistence.
-
    * @return ParseStorageInterface
    */
   public static function getStorage()
@@ -356,5 +422,7 @@ final class ParseClient
     $date = substr($date, 0, -3) . 'Z';
     return $date;
   }
+
+  
 
 }
