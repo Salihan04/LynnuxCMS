@@ -43,6 +43,16 @@ $psi_data = PSIGrabber::grabData();
     height: 70px;
     overflow: hidden;
   }
+  tr:hover { 
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  td a { 
+    display: block; 
+    border: 10px solid black;
+    padding: 16px; 
+  }
   </style>
 
   <script src="https://maps.googleapis.com/maps/api/js"></script>

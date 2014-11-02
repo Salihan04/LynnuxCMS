@@ -5,9 +5,9 @@ Parse.initialize("qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW", "GBGfnA0ZvD52vPdKps
 Initializer = {
 	init : function init(){
 		Initializer.refresh();
-		window.setInterval(function autoRefresh(){
-			Initializer.refresh();
-		}, tick);
+		// window.setInterval(function autoRefresh(){
+		// 	Initializer.refresh();
+		// }, tick);
 	
 
 	},
@@ -37,6 +37,11 @@ Initializer = {
 					var reporter = incident.get("reporter");
 
 					var tr = document.createElement("tr");
+					tr.onclick = function(){
+						window.document.location='#';
+					};
+					
+					var a = document.createElement("a");
 
 					var tdId = document.createElement("td");
 					tdId.innerHTML = id;
