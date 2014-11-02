@@ -7,7 +7,7 @@
   </ul>
   <ul class="nav nav-sidebar">
     <li><a href="assignResource.php">Assign Resource</a></li>
-    <li><a href="">Nav item again</a></li>
+    <li><a href="createEvent.php">Create Event</a></li>
     <li><a href="">One more nav</a></li>
     <li><a href="">Another nav item</a></li>
     <li><a href="">More navigation</a></li>
