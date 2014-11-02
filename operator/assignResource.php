@@ -32,7 +32,7 @@ if($method == 'POST') {
 
     $assignedResource->set('incident', $incident);
     $assignedResource->set('resource', $resource);
-    $assignedResource->set('quantity', 1);
+    $assignedResource->increment('quantity', 1);
     $assignedResource->save();
     $saveSuccess = true;
 

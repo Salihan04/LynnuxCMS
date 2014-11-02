@@ -6,6 +6,7 @@ require '../vendor/autoload.php';
 use Parse\ParseClient;
 use Parse\ParseObject;
 use Parse\ParseQuery;
+use Parse\ParseRelation;
 
 ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
 
@@ -13,14 +14,83 @@ ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR
 $method = $_SERVER['REQUEST_METHOD'];
 
 $incidentHTML = '';
+$resourceHTML = '';
+$organizationHTML = '';
+$saveSuccess = false;
+$errorMessage= '';
 
 if($method == 'GET'){
   $query = new ParseQuery("Incident");
   $results = $query->find();
-
   for ($i = 0; $i < count($results); $i++) { 
     $object = $results[$i];
-    $incidentHTML .= '<option value="'.$object->getObjectId().'">'.$object->get("name").'</option>';
+    $incidentHTML .= '<label><input id="incident'.$i.'" type="checkbox" name="incident[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
+  }
+
+  $query = new ParseQuery("Resource");
+  $resources = $query->find();
+  for ($i = 0; $i < count($resources); $i++) { 
+    $object = $resources[$i];
+    $resourceHTML .= '<label><input type="checkbox" name="resource[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
+  }
+
+  $query = new ParseQuery("Organization");
+  $organizations = $query->find();
+  for ($i = 0; $i < count($organizations); $i++) { 
+    $object = $organizations[$i];
+    $organizationHTML .= '<label><input type="checkbox" name="organization[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
+  }
+}else if($method == 'POST'){
+  try{
+    $assignedResource = ParseObject::create('Event');
+
+    $raw_name = $_POST['eventName'];
+    $raw_incidents = $_POST['incident'];
+    $raw_resources = $_POST['resource'];
+    $raw_organizations = $_POST['organization'];
+
+    $event = ParseObject::create('Event');
+    $event->set("name",$raw_name);
+
+    $incidentRelation = $event->getRelation("incidents");
+    foreach($raw_incidents as $key => $raw_incident){
+      $incident = ParseObject::create("Incident",$raw_incident,true);
+      $incidentRelation->add($incident);
+    }
+
+    // $organizations = array();
+    $organizationRelation = $event->getRelation("organizations");
+    foreach($raw_organizations as $key => $raw_organization){
+      $organization = ParseObject::create("Organization",$raw_organization,true);
+      $organizationRelation->add($organization);
+    }
+
+
+    $resources = array();
+    foreach($raw_resources as $key => $raw_resource){
+      $resources[$key] = ParseObject::create("Incident",$raw_resource,true);
+    }
+
+    $event->save();
+
+    foreach($raw_incidents as $incidentID){
+      foreach($raw_resources as $resourceID){
+        $assignedResource = ParseObject::create('AssignResource');
+        $incident = ParseObject::create('Incident',$incidentID,true);
+        $resource = ParseObject::create('Resource',$resourceID,true);
+
+        $assignedResource->set('incident', $incident);
+        $assignedResource->set('resource', $resource);
+        $assignedResource->increment('quantity', 1);
+        $assignedResource->save();
+      }
+    }
+
+
+    $saveSuccess = true;
+  }catch(Exception $e){
+    $saveSuccess = false;
+    $errorMessage = $e->getMessage();
   }
 }
 ?>
@@ -66,20 +136,45 @@ if($method == 'GET'){
 
           <div class="col-md-15">
 
-            <form role="form" class="form-horizontal" method="post" action="assignResource.php">
+            <?php
+            if($method == 'GET'){
+            ?>
+
+            <form role="form" class="form-horizontal" method="post" action="createEvent.php">
               <div class="form-group">
 
                 <div class="panel panel-info">
                   <div class="panel-body">
-
-                    <!-- A list of incident with dropdown menu -->
-                    <label class="col-sm-2 control-label" for="incident">Incident</label>
+                    <!-- Event name input -->
+                    <label class="col-sm-2 control-label" for="eventName">Event Name:</label>
                     <div class="input-group">
-                      <select class="form-control" id="incident" name="incident" required="required">                    
-                        <?php echo($incidentHTML);?>
-                      </select>
+                      <span class="input-group-addon">*</span>
+                       <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Event Name" required="required">
                     </div>
-                    <!-- End a list of incident with dropdown menu -->
+                    <!-- End Event name input -->
+
+                    <br/>
+
+                    <!-- A list of incident with checkbox -->
+                    <label class="col-sm-2 control-label" for="incident">Incident</label>
+                    <div class="col-xs-3 checkbox ">                 
+                      <?php echo($incidentHTML);?>
+                    </div>
+                    <!-- End a list of incident with checkbox -->
+
+                    <!-- A list of resource with checkbox -->
+                    <label class="col-sm-2 control-label" for="resource">Resource</label>
+                    <div class="col-xs-3 checkbox input-group"> 
+                      <?php echo($resourceHTML);?>
+                    </div>
+                    <!-- End of a list of resource with checkbox -->
+
+                    <!-- A list of resource with checkbox -->
+                    <label class="col-sm-2 control-label" for="resource">Organization</label>
+                    <div class="col-xs-3 checkbox input-group"> 
+                      <?php echo($organizationHTML);?>
+                    </div>
+                    <!-- End of a list of resource with checkbox -->
 
                     <br />
 
@@ -88,7 +183,17 @@ if($method == 'GET'){
                 <input type="submit" />
               </div>
             </form>
-
+            <?php
+            }
+            else if($saveSuccess){
+              echo('<p>Event has been created</p>');
+            }
+            else{
+              echo('<p>Create event fail: ');
+              echo($errorMessage);
+              echo('</p>');
+            }
+            ?>
           </div>
         <div class="col-md-2"></div>
       
