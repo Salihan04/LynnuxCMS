@@ -41,6 +41,7 @@ $psi_data = PSIGrabber::grabData();
   #info {
     width: 50px;
     height: 70px;
+    overflow: hidden;
   }
   </style>
 
