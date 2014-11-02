@@ -194,7 +194,7 @@ else if($method == 'GET'){
                     </div>
                   </div>
                 </div>
-                <input type="submit" />
+                <input class="btn btn-primary btn-lg" type="submit" />
               </div>
             </form>
             

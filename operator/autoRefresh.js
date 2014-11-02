@@ -5,9 +5,9 @@ Parse.initialize("qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW", "GBGfnA0ZvD52vPdKps
 Initializer = {
 	init : function init(){
 		Initializer.refresh();
-		// window.setInterval(function autoRefresh(){
-		// 	Initializer.refresh();
-		// }, tick);
+		window.setInterval(function autoRefresh(){
+			Initializer.refresh();
+		}, tick);
 	
 
 	},
@@ -37,14 +37,14 @@ Initializer = {
 					var reporter = incident.get("reporter");
 
 					var tr = document.createElement("tr");
-					tr.onclick = function(){
-						window.document.location='#';
-					};
-					
-					var a = document.createElement("a");
+					tr.onclick = (function(argsId){
+						return function innerFunction(){
+							window.document.location='incidentDetail.php?id='+argsId;
+						}
+					})(id);
 
-					var tdId = document.createElement("td");
-					tdId.innerHTML = id;
+					// var tdId = document.createElement("td");
+					// tdId.innerHTML = id;
 
 
 					var tdName = document.createElement("td");
@@ -63,23 +63,23 @@ Initializer = {
 					tdResource.setAttribute("id","resource"+id);
 					tr.appendChild(tdResource);
 
-					var tdReporter = document.createElement("td");
-					if(reporter!=null){
-						tdReporter.setAttribute("id","reporter"+reporter.id);
-					}
+					// var tdReporter = document.createElement("td");
+					// if(reporter!=null){
+					// 	tdReporter.setAttribute("id","reporter"+reporter.id);
+					// }
 
-					var tdCreated = document.createElement("td");
-					tdCreated.innerHTML = incident.createdAt;
-					console.log(incident.createdAt);
+					// var tdCreated = document.createElement("td");
+					// tdCreated.innerHTML = incident.createdAt;
+					// console.log(incident.createdAt);
 
-					tr.appendChild(tdId);
+					// tr.appendChild(tdId);
 					tr.appendChild(tdName);
 					tr.appendChild(tdStatus);
 					tr.appendChild(tdDescription);
 					tr.appendChild(tdLocation);
 					tr.appendChild(tdResource)
-					tr.appendChild(tdReporter);
-					tr.appendChild(tdCreated);
+					// tr.appendChild(tdReporter);
+					// tr.appendChild(tdCreated);
 					tbody.appendChild(tr);
 
 					incident_table = document.getElementById("incident_table");
@@ -113,6 +113,7 @@ Initializer = {
 								else{
 									var button = document.createElement("button");
 									button.setAttribute("type","button");
+									button.setAttribute("class","btn btn-primary btn-md");
 									button.setAttribute("onclick","location.href='assignResource.php?incident="+j+"'");
 									button.innerHTML = "assign resource";
 									document.getElementById("resource"+j).appendChild(button);

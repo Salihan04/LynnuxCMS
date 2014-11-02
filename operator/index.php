@@ -292,17 +292,14 @@ $psi_data = PSIGrabber::grabData();
 
           <h2 class="sub-header">Incident</h2>
           <div class="table-responsive">
-            <table class="table table-striped" id="incident_table">
+            <table class="table table-striped table-hover" id="incident_table">
               <thead>
                 <tr>
-                  <th>Id</th>
                   <th>Name</th>
                   <th>Status</th>
                   <th>Description</th>
                   <th>Location</th>
                   <th>Resources</th>
-                  <th>Reported by</th>
-                  <th>Created at</th>
                 </tr>
               </thead>
               <tbody id="incident_body">
