@@ -25,7 +25,18 @@
 
 
 </head>
-
+	<style>
+	tr:hover { 
+		color: blue;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	td a { 
+		display: block; 
+		border: 10px solid black;
+		padding: 16px; 
+	}
+	</style>
   <body onload="initialize();">
 
     <?php
