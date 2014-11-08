@@ -10,6 +10,7 @@
   <ul class="nav nav-sidebar">
     <li <?php if(curPageURL('index')) echo 'class="active"'?> ><a href="index.php">Overview</a></li>
     <li <?php if(curPageURL('event')) echo 'class="active"'?> ><a href="event.php">Current Event</a></li>
+    <li <?php if(curPageURL('report')) echo 'class="active"'?> ><a href="report.php">Report</a></li>
   </ul>
   <ul class="nav nav-sidebar">
     <li <?php if(curPageURL('assignResource')) echo 'class="active"'?> ><a href="assignResource.php">Assign Resource</a></li>
