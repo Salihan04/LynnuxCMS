@@ -21,6 +21,22 @@ function createH2(value){
 	return h2;
 }
 
+function createH3(value){
+	var h3 = document.createElement("h3");
+	h3.innerHTML = value;
+	return h3;
+}
+
+function createBR(){
+	var br = document.createElement("br");
+	return br;
+}
+
+function createHR(){
+	var hr = document.createElement("hr");
+	return hr;
+}
+
 function createTh(value){
 	var th = document.createElement("th");
 	th.innerHTML = value;
@@ -188,8 +204,13 @@ function refresh(){
 					};
 				})(organizationsTable));
 
+				eventbody.appendChild(createBR());
+				eventbody.appendChild(createH3('Incidents'));
 				eventbody.appendChild(div1);
+				eventbody.appendChild(createBR());
+				eventbody.appendChild(createH3('Resources'));
 				eventbody.appendChild(div2);
+				eventbody.appendChild(createHR());
 			}
 
 		}else{
@@ -198,20 +219,6 @@ function refresh(){
 	});
 
 }
-
-// <table class="table table-striped table-hover" id="incident_table">
-//               <thead>
-//                 <tr>
-//                   <th>Name</th>
-//                   <th>Status</th>
-//                   <th>Description</th>
-//                   <th>Location</th>
-//                   <th>Resources</th>
-//                 </tr>
-//               </thead>
-//               <tbody id="incident_body">
-//               </tbody>
-//             </table>
 
 function initialize(){
 	refresh();
