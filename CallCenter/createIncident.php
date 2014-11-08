@@ -14,12 +14,6 @@ $assistanceTypes = $query->find();
 $method = $_SERVER['REQUEST_METHOD'];
 
 if($method == 'POST') {
-
-	$incident = ParseObject::create('Incident');
-	$incident->set('name', $_POST['incidentName']);
-	$incident->set('description', $_POST['incidentDescription']);
-	$incident->set('priority', intval($_POST['priority']));
-	$incident->save();
 	
 	$reporter = ParseObject::create('Reporter');
 	$reporter->set('name', $_POST['name']);
@@ -27,8 +21,14 @@ if($method == 'POST') {
 	$reporter->set('NRIC', $_POST['NRIC']);
 	$reporter->set('address', $_POST['address']);
 	$reporter->set('typeOfAssistance', $_POST['typeOfAssistance']);
-	$reporter->set('incident', $incident);
 	$reporter->save();
+
+	$incident = ParseObject::create('Incident');
+	$incident->set('name', $_POST['incidentName']);
+	$incident->set('description', $_POST['incidentDescription']);
+	$incident->set('priority', intval($_POST['priority']));
+	$incident->set('reporter',$reporter);
+	$incident->save();
 
 	echo("Saved successfully");
 }

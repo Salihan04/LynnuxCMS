@@ -34,18 +34,12 @@ Initializer = {
 						location = location._latitude+" "+location._longitude;
 					}
 
-					var reporter = incident.get("reporter");
-
 					var tr = document.createElement("tr");
 					tr.onclick = (function(argsId){
 						return function innerFunction(){
 							window.document.location='incidentDetail.php?id='+argsId;
 						}
 					})(id);
-
-					// var tdId = document.createElement("td");
-					// tdId.innerHTML = id;
-
 
 					var tdName = document.createElement("td");
 					tdName.innerHTML = name;
@@ -61,25 +55,13 @@ Initializer = {
 
 					var tdResource = document.createElement("td");
 					tdResource.setAttribute("id","resource"+id);
+
 					tr.appendChild(tdResource);
-
-					// var tdReporter = document.createElement("td");
-					// if(reporter!=null){
-					// 	tdReporter.setAttribute("id","reporter"+reporter.id);
-					// }
-
-					// var tdCreated = document.createElement("td");
-					// tdCreated.innerHTML = incident.createdAt;
-					// console.log(incident.createdAt);
-
-					// tr.appendChild(tdId);
 					tr.appendChild(tdName);
 					tr.appendChild(tdStatus);
 					tr.appendChild(tdDescription);
 					tr.appendChild(tdLocation);
 					tr.appendChild(tdResource)
-					// tr.appendChild(tdReporter);
-					// tr.appendChild(tdCreated);
 					tbody.appendChild(tr);
 
 					incident_table = document.getElementById("incident_table");

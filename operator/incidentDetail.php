@@ -15,6 +15,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $incidentHTML = '';
 $errorMessage= '';
+$reporterHTML = '';
 
 function getProperDateFormat($value){
   $dateFormatString = 'Y-m-d\TH:i:s.u';
@@ -31,45 +32,59 @@ if($method == 'GET'){
     $query = new ParseQuery("Incident");
     $result = $query->get($incidentId);
     
-    $incidentHTML .= '<label class="col-sm-2">Id</label>';
-    $incidentHTML .= '<p class="col-sm-10">'.$result->getObjectId().'</p>';
+    $incidentHTML .= '<label class="col-sm-3">Id</label>';
+    $incidentHTML .= '<p class="col-sm-9">'.$result->getObjectId().'</p>';
     $incidentHTML .= '<br/>';
 
-    $incidentHTML .= '<label class="col-sm-2">Name</label>';
-    $incidentHTML .= '<p class="col-sm-10">'.$result->get("name").'</p>';
+    $incidentHTML .= '<label class="col-sm-3">Name</label>';
+    $incidentHTML .= '<p class="col-sm-9">'.$result->get("name").'</p>';
     $incidentHTML .= '<br/>';
 
-    $incidentHTML .= '<label class="col-sm-2">Status</label>';
-    $incidentHTML .= '<p class="col-sm-10">'.$result->get("status").'</p>';
+    $incidentHTML .= '<label class="col-sm-3">Status</label>';
+    $incidentHTML .= '<p class="col-sm-9">'.$result->get("status").'</p>';
     $incidentHTML .= '<br/>';
 
-    $incidentHTML .= '<label class="col-sm-2">Description</label>';
-    $incidentHTML .= '<p class="col-sm-10">'.$result->get("description").'</p>';
+    $incidentHTML .= '<label class="col-sm-3">Description</label>';
+    $incidentHTML .= '<p class="col-sm-9">'.$result->get("description").'</p>';
     $incidentHTML .= '<br/>';
 
-    $incidentHTML .= '<label class="col-sm-2">Location</label>';
+    $incidentHTML .= '<label class="col-sm-3">Location</label>';
     
     if($result->get("location")!=null){
-      $incidentHTML .= '<p class="col-sm-10">'.$result->get("location")->getLatitude().','.$result->get("location")->getLongitude().'</p>';
+      $incidentHTML .= '<p class="col-sm-9">'.$result->get("location")->getLatitude().','.$result->get("location")->getLongitude().'</p>';
     }else{
-      $incidentHTML .= '<p class="col-sm-10">no location details</p>';
-    }
-    $incidentHTML .= '<br/>';
-
-    $incidentHTML .= '<label class="col-sm-2">Reporter</label>';
-    
-    if($result->get("reporter")==null){
-      $incidentHTML .= '<p class="col-sm-10">no reporter</p>';
-    }else{
-      $result->get("reporter")->fetch();
-      $incidentHTML .= '<p class="col-sm-10">'.$result->get("reporter")->get("username").'</p>';
+      $incidentHTML .= '<p class="col-sm-9">no location details</p>';
     }
 
     $incidentHTML .= '<br/>';
 
-    $incidentHTML .= '<label class="col-sm-2">Created At</label>';
-    $incidentHTML .= '<p class="col-sm-10">'.getProperDateFormat($result->getCreatedAt()).'</p>';
+    $incidentHTML .= '<label class="col-sm-3">Created At</label>';
+    $incidentHTML .= '<p class="col-sm-9">'.getProperDateFormat($result->getCreatedAt()).'</p>';
     $incidentHTML .= '<br/>';
+
+
+    $result->get("reporter")->fetch();
+    $reporter = $result->get("reporter");
+    $reporterHTML .= '<label class="col-sm-3">Reporter</label>';
+    if($reporter==null){
+      $reporterHTML .= '<p class="col-sm-9">no reporter</p>';
+    }else{
+      $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("name").'</p>';
+      $reporterHTML .= '<br/>';
+      $reporterHTML .= '<label class="col-sm-3">Mobile Phone</label>';
+      $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("mobile_no").'</p>';
+      $reporterHTML .= '<br/>';
+      $reporterHTML .= '<label class="col-sm-3">Address</label>';
+      $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("address").'</p>';
+      $reporterHTML .= '<br/>';
+      $reporterHTML .= '<label class="col-sm-3">NRIC</label>';
+      $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("NRIC").'</p>';
+      $reporterHTML .= '<br/>';
+      $reporterHTML .= '<label class="col-sm-3">Requested Resources</label>';
+      $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("typeOfAssistance").'</p>';
+
+    }
+
 
     $resourceHTML = '';
     $queryAssignResource = new ParseQuery("AssignResource");
@@ -130,7 +145,7 @@ if($method == 'GET'){
           include('menu/operator_side_menu.php');
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Event Details</h1>
+          <h1 class="page-header">Incident Details</h1>
 
           <div class="form-horizontal form-group">
           <?php
@@ -139,7 +154,13 @@ if($method == 'GET'){
             
           </div>
           <br/>
-          <h1 class="page-header">Resources</h1>
+          <h2 class="page-header">Reporter</h2>
+          <?php
+            echo $reporterHTML;
+          ?>
+          <br/>
+          <br/>
+          <h2 class="page-header">Resources</h2>
           <?php
             echo $resourceHTML;
           ?>
