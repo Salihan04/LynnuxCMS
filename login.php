@@ -102,23 +102,36 @@ else{
 
             <div class="row">
                 <!-- create a form -->
-                <form action="/login.php" method="post" id="login-form">
-                    <label class="col-sm-2 control-label required" for="username">Username:</label>
-                    <div class="col-sm-4 input-group">
-                        <span class="input-group-addon">*</span>
-                        <input type="text" maxlength="254" class="form-control" id="username" name="username" placeholder="Username" required="required">
-                    </div>
-                    <br/>
-                   <label class="col-sm-2 control-label required" for="password">Password:</label>
-                    <div class="col-sm-4 input-group">
-                        <span class="input-group-addon">*</span>
-                        <input type="password" maxlength="254" class="form-control" id="password" name="password" placeholder="Password" required="required">
-                    </div>
+                <div class="col-md-3"></div>
+                <form role="form" class="col-md-6 form-horizontal" action="/login.php" method="post" id="login-form">
+                    <div class="form-group">
 
-                    <br/>
-                    <input class="col-sm-6 btn btn-primary btn-md" type="submit" value="Log in">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Login
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <label class="col-sm-3 control-label required" for="username">Username:</label>
+                            <div class="col-sm-8 input-group">
+                                <span class="input-group-addon">*</span>
+                                <input type="text" maxlength="254" class="form-control" id="username" name="username" placeholder="Username" required="required">
+                            </div>
+                            <br/>
+                           <label class="col-sm-3 control-label required" for="password">Password:</label>
+                            <div class="col-sm-8 input-group">
+                                <span class="input-group-addon">*</span>
+                                <input type="password" maxlength="254" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                            </div>
+
+                            <br/>
+                            <div class="col-md-3"></div>
+                            <input class="col-sm-8 btn btn-primary btn-md" type="submit" value="Log in">
+                        </div>
+                    </div>
                 </form>
                 <!-- end of create a form -->
+                <div class="col-md-3"></div>
             </div>  
         </div>
     </body> 
