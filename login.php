@@ -37,6 +37,7 @@ function redirectUser($user) {
     }  
 }
 
+$message = '';
 if($method == 'GET'){
 
     $currentUser = ParseUser::getCurrentUser();
@@ -48,23 +49,11 @@ if($method == 'GET'){
         //redirect them to correct index page
 
     } else {
+        $message = '';
         // show the signup or login page
         ?>
 
-<!-- create a form -->
-<form action="/login.php" method="post" id="login-form">
 
-    <label class="required">Username:</label> 
-    <input id="username" maxlength="254" name="username" type="text">
-    
-    <label class="required">Password:</label> 
-    <input id="password" name="password" type="password">
-    <!-- <input type="hidden" name="next" value="/admin/"> -->
-
-    <label>&nbsp;</label>
-    <input type="submit" value="Log in">
-</form>
-<!-- end of create a form -->
 
         <?php
     }
@@ -84,7 +73,7 @@ else{
          
     } catch (ParseException $error) {
         // The login failed. Check error to see why.
-        echo('Failed');
+        $message('Login Failed');
     }   
 }
 
@@ -92,3 +81,45 @@ else{
 
 ?>
 
+<html>
+    <head>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+        <title>Login</title>  
+    </head>
+    <body>
+        
+        <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Crisis Management System</a>
+                </div>
+            </nav>
+
+            <div class="row">
+                <!-- create a form -->
+                <form action="/login.php" method="post" id="login-form">
+                    <label class="col-sm-2 control-label required" for="username">Username:</label>
+                    <div class="col-sm-4 input-group">
+                        <span class="input-group-addon">*</span>
+                        <input type="text" maxlength="254" class="form-control" id="username" name="username" placeholder="Username" required="required">
+                    </div>
+                    <br/>
+                   <label class="col-sm-2 control-label required" for="password">Password:</label>
+                    <div class="col-sm-4 input-group">
+                        <span class="input-group-addon">*</span>
+                        <input type="password" maxlength="254" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                    </div>
+
+                    <br/>
+                    <input class="col-sm-6 btn btn-primary btn-md" type="submit" value="Log in">
+                </form>
+                <!-- end of create a form -->
+            </div>  
+        </div>
+    </body> 
+</html>
