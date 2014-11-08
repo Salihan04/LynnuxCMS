@@ -24,4 +24,4 @@ for r in incident:
 		r.priority == priority):
 		r.delete()
 		print(r.objectId)
-	break
+		break

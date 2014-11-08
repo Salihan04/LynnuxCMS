@@ -29,4 +29,4 @@ for r in reporter:
 		r.typeOfAssistance == typeAssistance):
 		r.delete()
 		print(r.objectId)
-	break
+		break
