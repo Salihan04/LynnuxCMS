@@ -1,4 +1,12 @@
 describe('create incident function', function() {
+	if(typeof(String.prototype.trim) === "undefined")
+	{
+	    String.prototype.trim = function() 
+	    {
+	        return String(this).replace(/^\s+|\s+$/g, '');
+	    };
+	}
+
 	var reporterNameUI = element(by.id('txtReporterName'));
 	var nricUI = element(by.id('txtNRIC'));
 	var mobileNoUI = element(by.id('txtMobileNo'));
@@ -7,6 +15,10 @@ describe('create incident function', function() {
 	var incidentNameUI = element(by.id('txtIncidentName'));
 	var incidentDescriptionUI = element(by.id('txtIncidentDescription'));
 	var priorityUI = element(by.id('cboPriority'));
+	var submitButton = element(by.id('submit'));
+
+	var window;
+	var Parse;
 
 	beforeEach(function() {
 		browser.get('http://localhost/CallCenter/createincident.php');
@@ -27,22 +39,38 @@ describe('create incident function', function() {
 		expect(priorityUI).not.toEqual(null);
 	});
 
-	// it('should add one and two', function() {
-	// 	firstNumber.sendKeys(1);
-	// 	secondNumber.sendKeys(2);
+	it('should be able to create new incident with all valid inputs', function() {
+		var reporterName = "Andy Chong";
+		var nric = "abcde12345";
+		var mobileNumber = "+6583937419";
+		var address = "Some address here";
+		var type = "Emergency Ambulance";
+		var incidentName = "Dengue";
+		var incidentDescription = "My son get dengue, he is dying soon!";
+		var priority = "1";
 
-	// 	goButton.click();
+		reporterNameUI.sendKeys(reporterName);
+		nricUI.sendKeys(nric);
+		mobileNoUI.sendKeys(mobileNumber);
+		addressUI.sendKeys(address);
+		typeUI.sendKeys(type);
+		incidentNameUI.sendKeys(incidentName);
+		incidentDescriptionUI.sendKeys(incidentDescription);
+		priorityUI.sendKeys(priority);
 
-	// 	expect(latestResult.getText()).toEqual('3');
-	// });
+		submitButton.click();
 
-	// it('should add four and six', function() {
-	// 	// Fill this in.
-	// 	firstNumber.sendKeys(4);
-	// 	secondNumber.sendKeys(6);
+		var exec = require('child_process').exec;
+		exec('python testReporter.py', function (error, stdout, stderr) {
+			expect(stdout).not.toEqual('');
+			var reporterObjectId = stdout.trim()
 
-	// 	goButton.click();
+			exec('python testIncident.py', function (error, stdout, stderr) {
+				expect(stdout).not.toEqual('');
+				var incidentObjectId = stdout.trim()
+			});
+		});
 
-	// 	expect(latestResult.getText()).toEqual('10');
-	// });
+	});
+
 });

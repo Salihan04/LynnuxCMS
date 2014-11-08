@@ -41,6 +41,7 @@ else if($method == 'GET') {
 		<!-- Bootstrap -->
 		<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+		<script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
 		<title>Create Incident</title>
 	</head>
 	<body>
@@ -155,7 +156,7 @@ else if($method == 'GET') {
 
 								<br />
 
-								<input class="btn btn-primary btn-lg" type="submit" />
+								<input class="btn btn-primary btn-lg" type="submit" id="submit"/>
 
 							</div>
 					</form>
