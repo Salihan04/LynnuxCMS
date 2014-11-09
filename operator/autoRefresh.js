@@ -5,9 +5,9 @@ Parse.initialize("qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW", "GBGfnA0ZvD52vPdKps
 Initializer = {
 	init : function init(){
 		Initializer.refresh();
-		window.setInterval(function autoRefresh(){
-			Initializer.refresh();
-		}, tick);
+		// window.setInterval(function autoRefresh(){
+		// 	Initializer.refresh();
+		// }, tick);
 	
 
 	},
@@ -105,11 +105,11 @@ Initializer = {
 
 					promise.oid = id;
 
-					if(reporter != null){
-						reporter.fetch().then(function(realReporter){
-							document.getElementById("reporter"+realReporter.id).innerHTML = realReporter.get("username");
-						});
-					}
+					// if(reporter != null){
+					// 	reporter.fetch().then(function(realReporter){
+					// 		document.getElementById("reporter"+realReporter.id).innerHTML = realReporter.get("username");
+					// 	});
+					// }
 
 
 				}

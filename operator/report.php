@@ -1,5 +1,6 @@
 <?php
 require '../vendor/autoload.php';
+include("../phpfastcache/phpfastcache.php");
 
 use Parse\ParseClient;
 use Parse\ParseObject;
@@ -7,7 +8,8 @@ use Parse\ParseQuery;
 use Parse\ParseRelation;
 
 ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
-
+$cache = phpFastCache("files");
+// $cache->clean();
 //remember to check user login
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -23,8 +25,21 @@ function getEnglishOrder($value){
         return "third";
     }
 }
-$query = new ParseQuery("Event");
-$result = $query->find();
+
+function getAllEventFromCacheOrQuery(){
+  global $cache;
+  $results = $cache->get("all_event");
+  if($results == null) {
+    $query = new ParseQuery("Event");
+    $results = $query->find();
+
+    //cache 15 minute
+    $cache->set("all_event", $results, 900);
+  }
+  return $results;
+}
+
+$result = getAllEventFromCacheOrQuery();
 
 if(count($result)==0){
     $html .= "<p>No event currently</p>";
@@ -79,15 +94,15 @@ else{
     <title>Report</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./template_files/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link href="./template_files/dashboard.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="./template_files/ie-emulation-modes-warning.js"></script>
-    <script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+    <script src="./parse-1.3.1.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

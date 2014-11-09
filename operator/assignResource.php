@@ -3,11 +3,12 @@
 <?php
 
 require '../vendor/autoload.php';
+include("../phpfastcache/phpfastcache.php");
 
 use Parse\ParseClient;
 
 ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
-
+$cache = phpFastCache("files");
 
 use Parse\ParseObject;
 use Parse\ParseQuery;
@@ -21,6 +22,30 @@ $incidentHTML = '';
 $resourceHTML = '';
 
 $saveSuccess = false;
+
+function getAllIncidentFromCacheOrQuery(){
+  global $cache;
+  $results = $cache->get("all_incident");
+  if($results == null) {
+    $query = new ParseQuery("Event");
+    $results = $query->find();
+
+    //cache 15 minute
+    $cache->set("all_incident", $results, 900);
+  }
+  return $results;
+}
+
+function getAllResourcesFromCacheOrQuery(){
+  global $cache;
+  $resources = $cache->get("all_resource");
+  if($resources==null){
+    $query = new ParseQuery("Resource");
+    $resources = $query->find();
+    $cache->set("all_resource", $resources, 1800);
+  }
+  return $resources;
+}
 
 if($method == 'POST') {
 
@@ -53,9 +78,8 @@ else if($method == 'GET'){
 
   }
   if($incident==null){
-
-    $query = new ParseQuery("Incident");
-    $results = $query->find();
+    // try to get from Cache first.
+    $results = getAllIncidentFromCacheOrQuery();
 
     for ($i = 0; $i < count($results); $i++) { 
       $object = $results[$i];
@@ -63,8 +87,8 @@ else if($method == 'GET'){
     }
   }
 
-  $query = new ParseQuery("Resource");
-  $resources = $query->find();
+  $resources = getAllResourcesFromCacheOrQuery();
+
   for ($i = 0; $i < count($resources); $i++) { 
     $object = $resources[$i];
     $resourceHTML .= '<option value="'.$object->getObjectId().'">'.$object->get("name").'</option>';
@@ -78,10 +102,10 @@ else if($method == 'GET'){
     <title>Dashboard Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./template_files/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link href="./template_files/dashboard.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->

@@ -1,12 +1,14 @@
 <?php
 
 require '../vendor/autoload.php';
+include("../phpfastcache/phpfastcache.php");
 
 use Parse\ParseClient;
 use Parse\ParseObject;
 use Parse\ParseQuery;
  
 ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
+$cache = phpFastCache("files");
 
 $query = new ParseQuery("AssistanceType");
 $assistanceTypes = $query->find();
@@ -14,7 +16,7 @@ $assistanceTypes = $query->find();
 $method = $_SERVER['REQUEST_METHOD'];
 
 if($method == 'POST') {
-	
+	$cache->delete("all_incident");
 	$reporter = ParseObject::create('Reporter');
 	$reporter->set('name', $_POST['name']);
 	$reporter->set('mobile_no', $_POST['mobileNo']);

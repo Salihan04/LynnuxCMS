@@ -2,6 +2,7 @@
 <!-- saved from url=(0071)file:///C:/wamp/www/operator/Dashboard%20Template%20for%20Bootstrap.htm -->
 <?php
 require '../vendor/autoload.php';
+include("../phpfastcache/phpfastcache.php");
 
 use Parse\ParseClient;
 use Parse\ParseObject;
@@ -9,6 +10,7 @@ use Parse\ParseQuery;
 use Parse\ParseRelation;
 
 ParseClient::initialize('qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW', '9Yl2TD1DcjR6P1XyppzQ9NerO6ZwWBQnpQiM0MkL', 'MjYJYsSjr5wZVntUFxDvv0VpXGqhPOT8YFpULNB2');
+$cache = phpFastCache("files");
 
 //remember to check user login
 $method = $_SERVER['REQUEST_METHOD'];
@@ -19,29 +21,60 @@ $organizationHTML = '';
 $saveSuccess = false;
 $errorMessage= '';
 
+function getAllIncidentFromCacheOrQuery(){
+  global $cache;
+  $results = $cache->get("all_incident");
+  if($results == null) {
+    $query = new ParseQuery("Incident");
+    $results = $query->find();
+    $cache->set("all_incident", $results, 1800);
+  }
+  return $results;
+}
+
+function getAllResourcesFromCacheOrQuery(){
+  global $cache;
+  $resources = $cache->get("all_resource");
+  if($resources==null){
+    $query = new ParseQuery("Resource");
+    $resources = $query->find();
+    $cache->set("all_resource", $resources, 1800);
+  }
+  return $resources;
+}
+
+function getAllOrganizationFromCacheOrQuery(){
+  global $cache;
+  $organizations = $cache->get("all_organization");
+  if($resources==null){
+    $query = new ParseQuery("Organization");
+    $organizations = $query->find();
+    $cache->set("all_organization", $resources, 1800);
+  }
+  return $organizations;
+}
+
 if($method == 'GET'){
-  $query = new ParseQuery("Incident");
-  $results = $query->find();
+  $results = getAllIncidentFromCacheOrQuery();
   for ($i = 0; $i < count($results); $i++) { 
     $object = $results[$i];
     $incidentHTML .= '<label><input id="incident'.$i.'" type="checkbox" name="incident[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
   }
 
-  $query = new ParseQuery("Resource");
-  $resources = $query->find();
+  $resources = getAllResourcesFromCacheOrQuery();
   for ($i = 0; $i < count($resources); $i++) { 
     $object = $resources[$i];
     $resourceHTML .= '<label><input type="checkbox" name="resource[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
   }
 
-  $query = new ParseQuery("Organization");
-  $organizations = $query->find();
+  $organizations = getAllOrganizationFromCacheOrQuery();
   for ($i = 0; $i < count($organizations); $i++) { 
     $object = $organizations[$i];
     $organizationHTML .= '<label><input type="checkbox" name="organization[]" value="'.$object->getObjectId().'">'.$object->get("name").'</label><br/>';
   }
 }else if($method == 'POST'){
   try{
+    $cache->delete("all_event");
     $assignedResource = ParseObject::create('Event');
 
     $raw_name = $_POST['eventName'];
@@ -101,10 +134,10 @@ if($method == 'GET'){
     <title>Create Event</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./template_files/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    <link href="./template_files/dashboard.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
