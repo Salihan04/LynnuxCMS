@@ -5,9 +5,9 @@ Parse.initialize("qjArPWWC0eD8yFmAwRjKkiCQ82Dtgq5ovIbD5ZKW", "GBGfnA0ZvD52vPdKps
 Initializer = {
 	init : function init(){
 		Initializer.refresh();
-		// window.setInterval(function autoRefresh(){
-		// 	Initializer.refresh();
-		// }, tick);
+		window.setInterval(function autoRefresh(){
+			Initializer.refresh();
+		}, tick);
 	
 
 	},
@@ -15,7 +15,7 @@ Initializer = {
 
 		//called from the timer
 
-		var Incident = Parse.Object.extend("Incident");
+		var Incident = Parse.Object.extend("CacheIncident");
 		var query = new Parse.Query(Incident);
 
 		var tbody = document.createElement("tbody");
@@ -30,9 +30,7 @@ Initializer = {
 					var description = incident.get("description");
 					var status = incident.get("status");
 					var location = incident.get("location");
-					if(location!=null){
-						location = location._latitude+" "+location._longitude;
-					}
+					var resource = incident.get("resource");
 
 					var tr = document.createElement("tr");
 					tr.onclick = (function(argsId){
@@ -54,7 +52,7 @@ Initializer = {
 					tdLocation.innerHTML = location;
 
 					var tdResource = document.createElement("td");
-					tdResource.setAttribute("id","resource"+id);
+					tdResource.innerHTML = resource;
 
 					tr.appendChild(tdResource);
 					tr.appendChild(tdName);
@@ -68,50 +66,6 @@ Initializer = {
 					incident_body = document.getElementById("incident_body");
 					incident_table.removeChild(incident_body);
 					incident_table.appendChild(tbody);
-
-					var AssignResource = Parse.Object.extend("AssignResource");
-					var resourseQuery = new Parse.Query(AssignResource);
-					resourseQuery.equalTo("incident",incident);
-
-
-					var promise = resourseQuery.find();
-					promise.oid = id;
-
-					promise = promise.then((function(j) {
-				        return function innerFunction(results) { // inner function
-								if(results.length>0){
-									
-									for(var k=0;k<results.length;k++){
-
-										results[k].get("resource").fetch().then((function(kFake){
-											return function innerFunction(result){
-												var html = "";
-												html += results[kFake].get("resource").get("name") + "&nbsp";
-												document.getElementById("resource"+j).innerHTML += html;
-											}
-										})(k));
-									}
-								}
-								else{
-									var button = document.createElement("button");
-									button.setAttribute("type","button");
-									button.setAttribute("class","btn btn-primary btn-md");
-									button.setAttribute("onclick","location.href='assignResource.php?incident="+j+"'");
-									button.innerHTML = "assign resource";
-									document.getElementById("resource"+j).appendChild(button);
-								}
-							}
-						})(id));
-
-					promise.oid = id;
-
-					// if(reporter != null){
-					// 	reporter.fetch().then(function(realReporter){
-					// 		document.getElementById("reporter"+realReporter.id).innerHTML = realReporter.get("username");
-					// 	});
-					// }
-
-
 				}
 			},
 			error: function(object, error) {
