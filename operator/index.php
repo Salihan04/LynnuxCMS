@@ -7,7 +7,6 @@ require '../util/PSIGrabber.php';
 // Getting PSI data
 $psi_grabber = new PSIGrabber();
 $psi_data = PSIGrabber::grabData();
-
 ?>
 <html lang="en">
     <head>
@@ -41,7 +40,7 @@ $psi_data = PSIGrabber::grabData();
   }
   #info {
     width: 50px;
-    height: 70px;
+    height: 80px;
     overflow: hidden;
   }
   tr:hover { 
