@@ -63,12 +63,14 @@ if($method == 'GET'){
     $incidentHTML .= '<br/>';
 
 
-    $result->get("reporter")->fetch();
     $reporter = $result->get("reporter");
-    $reporterHTML .= '<label class="col-sm-3">Reporter</label>';
+    
     if($reporter==null){
-      $reporterHTML .= '<p class="col-sm-9">no reporter</p>';
+      $reporterHTML .= '<p>No Reporter</p>';
     }else{
+      $reporterHTML .= '<label class="col-sm-3">Reporter</label>';
+      $result->get("reporter")->fetch();
+      $reporter = $result->get("reporter");
       $reporterHTML .= '<p class="col-sm-9">'.$reporter->get("name").'</p>';
       $reporterHTML .= '<br/>';
       $reporterHTML .= '<label class="col-sm-3">Mobile Phone</label>';
@@ -90,14 +92,19 @@ if($method == 'GET'){
     $queryAssignResource = new ParseQuery("AssignResource");
     $queryAssignResource->equalTo("incident", $result);
     $assignResourceResults = $queryAssignResource->find();
-    $resourceHTML .= '<ol>';
-    for($j=0;$j<count($assignResourceResults);$j++){
-      $resourceHTML .= '<li>';
-      $assignResourceResults[$j]->get('resource')->fetch();
-      $resourceHTML .= $assignResourceResults[$j]->get('resource')->get('name');
-      $resourceHTML .= '</li>';
+
+    if(count($assignResourceResults)==0){
+      $resourceHTML = '<p>No Resource</p>';
+    }else{
+      $resourceHTML .= '<ol>';
+      for($j=0;$j<count($assignResourceResults);$j++){
+        $resourceHTML .= '<li>';
+        $assignResourceResults[$j]->get('resource')->fetch();
+        $resourceHTML .= $assignResourceResults[$j]->get('resource')->get('name');
+        $resourceHTML .= '</li>';
+      }
+      $resourceHTML .= '</ol><br/>';
     }
-    $resourceHTML .= '</ol><br/>';
 
     $resourceHTML .= '<button class="btn btn-primary btn-lg" type="button" onclick="location.href = \'\assignResource.php';
     $resourceHTML .= '?incident='.$result->getObjectId();

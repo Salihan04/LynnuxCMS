@@ -33,8 +33,6 @@ Initializer = {
 				for (var i = 0; i < incidents.length; i++) { 
 					var incident = incidents[i];
 					var id = incident.get("incidentId");
-					console.log(id);
-
 					var name = incident.get("name");
 					var description = incident.get("description");
 					var status = incident.get("status");
