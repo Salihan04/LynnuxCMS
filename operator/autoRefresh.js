@@ -32,6 +32,8 @@ Initializer = {
 					var location = incident.get("location");
 					var resource = incident.get("resource");
 
+
+
 					var tr = document.createElement("tr");
 					tr.onclick = (function(argsId){
 						return function innerFunction(){
@@ -43,16 +45,26 @@ Initializer = {
 					tdName.innerHTML = name;
 
 					var tdDescription = document.createElement("td");
-					tdDescription.innerHTML = description;
+					tdDescription.innerHTML = description==undefined?"":description;
 
 					var tdStatus = document.createElement("td");
-					tdStatus.innerHTML = status;
+					tdStatus.innerHTML = status==undefined?"":status;
 
 					var tdLocation = document.createElement("td");
-					tdLocation.innerHTML = location;
+					tdLocation.innerHTML = location==undefined?"":location;
 
 					var tdResource = document.createElement("td");
-					tdResource.innerHTML = resource;
+
+					if(resource==undefined){
+                        var button = document.createElement("button");
+                        button.setAttribute("type","button");
+                        button.setAttribute("class","btn btn-primary btn-md");
+                        button.setAttribute("onclick","location.href='assignResource.php?incident="+id+"'");
+                        button.innerHTML = "assign resource";
+                        tdResource.appendChild(button);
+					}else{
+						tdResource.innerHTML = resource;
+					}
 
 					tr.appendChild(tdResource);
 					tr.appendChild(tdName);
