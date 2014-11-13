@@ -61,6 +61,7 @@ else{
 
     try {
         $user = ParseUser::logIn($username, $password);
+
         // redirect user to correct page
         if($user!=null){
             redirectUser($user);

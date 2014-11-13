@@ -154,6 +154,9 @@ $psi_data = PSIGrabber::grabData();
         regno = (regno + 1) % 5;
     }
 
+    // For google map
+    var map;
+
     function initialize() {
       var mapCanvas = document.getElementById('map_canvas');
 
@@ -164,27 +167,7 @@ $psi_data = PSIGrabber::grabData();
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true
       }
-      var map = new google.maps.Map(mapCanvas, mapOptions)
-
-      var contentString = '<div id="content">' + '<h1>Hello</h1>' + '<div id="bodyContent">' + '<p>Hello World!</p>' + '</div>' + '<div>';
-
-      var infowindow = new google.maps.InfoWindow({
-        content: contentString,
-        maxWidth: 300
-      });
-
-      var TampinesLatLng = new google.maps.LatLng(1.3451044, 103.955027);
-
-      var marker = new google.maps.Marker({
-        position: TampinesLatLng,
-        map: map,
-        title: 'Tampines',
-        width: window.innerWidth
-      });
-
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map, marker);
-      });
+      map = new google.maps.Map(mapCanvas, mapOptions);
 
       // var contentString = '<div id="content">' + '<h1>Hello</h1>' + '<div id="bodyContent">' + '<p>Hello World!</p>' + '</div>' + '<div>';
 
