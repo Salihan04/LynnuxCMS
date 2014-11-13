@@ -32,7 +32,7 @@ if($method == 'POST') {
 	$incident->set('reporter',$reporter);
 	$incident->save();
 
-	echo("Saved successfully");
+	header('Location: /callCenter/index.php?success=1');
 }
 else if($method == 'GET') {
 ?>
@@ -44,6 +44,15 @@ else if($method == 'GET') {
 		<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
 		<script src="//www.parsecdn.com/js/parse-1.3.1.min.js"></script>
+		<script type="text/javascript">
+			<?php
+				if($_GET['success'] == '1') {
+			?>
+					alert("Saved successfully");
+			<?php
+				}
+			?>
+		</script>
 		<title>Create Incident</title>
 	</head>
 	<body>
@@ -62,7 +71,7 @@ else if($method == 'GET') {
  				<div class="col-md-6">
 					<h1>Create Incident</h1>
 					
-					<form role="form" class="form-horizontal" method="post" action="createIncident.php">
+					<form role="form" class="form-horizontal" method="post" action="index.php">
 						<div class="form-group">
 
 							<div class="panel panel-info">
@@ -84,7 +93,7 @@ else if($method == 'GET') {
 									<label class="col-sm-4 control-label" for="txtNRIC">NRIC</label>
 									<div class="input-group">
 										<span class="input-group-addon">*</span>
-										 <input type="text" class="form-control" id="txtNRIC" name="NRIC" placeholder="txtNRIC" required="required">
+										 <input type="text" class="form-control" id="txtNRIC" name="NRIC" placeholder="NRIC" required="required">
 									</div>
 
 									<br />
