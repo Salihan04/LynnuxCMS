@@ -133,7 +133,7 @@ else{
         <form method="POST" action="./postOnSocialMedia.php" onsubmit="return confirm('Are you sure you want to post?');">
             <textarea id="message" name="message" rows="5" cols="100"><?php echo $html;?></textarea>
             <br/><br/>
-            <input type="Submit" value="Post" />
+            <input class="btn btn-primary btn-lg" type="Submit" value="Post" />
         </form>
         </div>
       </div>

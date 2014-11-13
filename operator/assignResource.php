@@ -180,7 +180,7 @@ else if($method == 'GET'){
                     </div>
                   </div>
                 </div>
-                <input class="btn btn-primary btn-lg" type="submit" />
+                <div class="col-sm-2"></div><input class="btn btn-primary btn-lg" type="submit" />
               </div>
             </form>
             
