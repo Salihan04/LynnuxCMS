@@ -107,9 +107,9 @@ Initializer = {
 
 				    markers.push(marker);
 
-				    google.maps.event.addListener(marker, 'click', function() {
-				        infowindow.open(map, marker);
-				    });
+				    google.maps.event.addListener(marker, 'click', function(m) {
+				        infowindow.open(map, m);
+				    }(marker));
 
 				}
 			},
