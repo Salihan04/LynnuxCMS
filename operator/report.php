@@ -15,6 +15,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 $html = '';
 
+if($method == 'POST') {
+    $query = new ParseQuery("EmailSchedule");
+    $results = $query->find();
+    $results[0]->set("scheduled", true);  
+    $results[0]->save();
+
+    header("Location: /operator");
+}
+
 function getEnglishOrder($value){
     if($value == 1){
         return "first";
@@ -127,6 +136,9 @@ else{
         <h1 class="page-header">Crisis Management System Report</h1>
         <div id="report">
         <?php echo $html; ?>
+            <form method="POST" action="/operator/report.php" onsubmit="return confirm('Are you sure you want to send email to Prime Minister every 30 minute.');">
+                <input type="submit" value="Send Report to Prime Minister every 30 minute." />   
+            </form>
         </div>
         </div>
       </div>
