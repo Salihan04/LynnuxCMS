@@ -32,7 +32,7 @@ Initializer = {
 				// The object was retrieved successfully.
 				for (var i = 0; i < incidents.length; i++) { 
 					var incident = incidents[i];
-					var id = incident.id;
+					var id = incident.get("incidentId");
 					var name = incident.get("name");
 					var description = incident.get("description");
 					var status = incident.get("status");
