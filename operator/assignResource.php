@@ -27,7 +27,7 @@ function getAllIncidentFromCacheOrQuery(){
   global $cache;
   $results = $cache->get("all_incident");
   if($results == null) {
-    $query = new ParseQuery("Event");
+    $query = new ParseQuery("Incident");
     $results = $query->find();
 
     //cache 15 minute
