@@ -84,6 +84,9 @@ Initializer = {
 					incident_table.removeChild(incident_body);
 					incident_table.appendChild(tbody);
 
+					if(location==null){
+						continue;
+					}
 					var latlong = location.split(" ");
 
 					// adding marker

@@ -51,19 +51,18 @@ function getAllEventFromCacheOrQuery(){
 $result = getAllEventFromCacheOrQuery();
 
 if(count($result)==0){
-    $html .= "<p>No event currently</p>";
+    $html .= "No event currently. ";
 }
 else{
     if(count($result)==1){
-        $html .="<p>There are ".count($result)." current event</p><br/>";
+        $html .="There are ".count($result)." current event. ";
     }
     else{
-        $html .="<p>There are ".count($result)." current events</p><br/>";
+        $html .="There are ".count($result)." current events. ";
     }
 
     for($i=0;$i<count($result);$i++){
-        $html .= "<p>";
-        $html .= "The ".getEnglishOrder($i+1)." event is <b>".$result[$i]->get("name")."</b>. ";
+        $html .= "The ".getEnglishOrder($i+1)." event is ".$result[$i]->get("name").". ";
         
         $html .= "It has ".count($result[$i]->get("incidents"))." related incidents. ";
 
@@ -87,7 +86,6 @@ else{
         }
 
         $html .= "been assigned to resolve the event.";
-        $html .= "</p><br/>";
     }
 } 
     
@@ -109,7 +107,7 @@ else{
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="./template_files/ie-emulation-modes-warning.js"></script>
-    <script src="./parse-1.3.1.min.js"></script>
+    <script src="./template_files/parse-1.3.1.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -119,7 +117,7 @@ else{
 
 
 </head>
-  <body onload="initialize();">
+  <body>
 
     <?php
       include('menu/operator_top_menu.php');
@@ -131,11 +129,11 @@ else{
           include('menu/operator_side_menu.php');
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">Publish on Social Media</h1>
+        <h1 class="page-header">Alert</h1>
         <form method="POST" action="./postOnSocialMedia.php" onsubmit="return confirm('Are you sure you want to post?');">
-            <textarea id="message" name="message" rows="5" cols="100"></textarea>
+            <textarea id="message" name="message" rows="5" cols="100"><?php echo $html;?></textarea>
             <br/><br/>
-            <input type="Submit" value="Post" />
+            <input class="btn btn-primary btn-lg" type="Submit" value="Post" />
         </form>
         </div>
       </div>

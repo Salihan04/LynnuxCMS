@@ -27,7 +27,7 @@ function getAllIncidentFromCacheOrQuery(){
   global $cache;
   $results = $cache->get("all_incident");
   if($results == null) {
-    $query = new ParseQuery("Event");
+    $query = new ParseQuery("Incident");
     $results = $query->find();
 
     //cache 15 minute
@@ -180,7 +180,7 @@ else if($method == 'GET'){
                     </div>
                   </div>
                 </div>
-                <input class="btn btn-primary btn-lg" type="submit" />
+                <div class="col-sm-2"></div><input class="btn btn-primary btn-lg" type="submit" />
               </div>
             </form>
             
