@@ -50,12 +50,6 @@ if($method == 'GET'){
 
     } else {
         $message = '';
-        // show the signup or login page
-        ?>
-
-
-
-        <?php
     }
 
 }
@@ -67,15 +61,20 @@ else{
 
     try {
         $user = ParseUser::logIn($username, $password);
-        
+
         // redirect user to correct page
-        redirectUser($user);
-        echo('Loged in');
+        if($user!=null){
+            redirectUser($user);
+            $message = 'Login successfully';
+        }
+        else{
+            $message = 'Login failed';
+        }
          
-    } catch (ParseException $error) {
+    } catch (Exception $error) {
         // The login failed. Check error to see why.
-        $message('Login Failed');
-    }   
+        $message = 'Login Failed';
+    }
 }
 
 
@@ -124,7 +123,7 @@ else{
                                 <span class="input-group-addon">*</span>
                                 <input type="password" maxlength="254" class="form-control" id="password" name="password" placeholder="Password" required="required">
                             </div>
-
+                            <div class="col-sm-3"></div><p class="col-sm-8"><?php echo $message?></p>
                             <br/>
                             <div class="col-md-3"></div>
                             <input class="col-sm-8 btn btn-primary btn-md" type="submit" value="Log in">

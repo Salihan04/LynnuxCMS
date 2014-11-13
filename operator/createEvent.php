@@ -190,21 +190,21 @@ if($method == 'GET'){
 
                     <!-- A list of incident with checkbox -->
                     <label class="col-sm-2 control-label" for="incident">Incident</label>
-                    <div class="col-xs-3 checkbox ">                 
+                    <div class="col-sm-10 checkbox input-group">                 
                       <?php echo($incidentHTML);?>
                     </div>
                     <!-- End a list of incident with checkbox -->
 
                     <!-- A list of resource with checkbox -->
                     <label class="col-sm-2 control-label" for="resource">Resource</label>
-                    <div class="col-xs-3 checkbox input-group"> 
+                    <div class="col-sm-10 checkbox input-group"> 
                       <?php echo($resourceHTML);?>
                     </div>
                     <!-- End of a list of resource with checkbox -->
 
                     <!-- A list of resource with checkbox -->
                     <label class="col-sm-2 control-label" for="resource">Organization</label>
-                    <div class="col-xs-3 checkbox input-group"> 
+                    <div class="col-sm-10 checkbox input-group"> 
                       <?php echo($organizationHTML);?>
                     </div>
                     <!-- End of a list of resource with checkbox -->
@@ -213,7 +213,7 @@ if($method == 'GET'){
 
                   </div>
                 </div>
-                <input class="btn btn-primary btn-lg" type="submit" />
+                <div class="col-sm-2"></div><input class="btn btn-primary btn-lg" type="submit" />
               </div>
             </form>
             <?php

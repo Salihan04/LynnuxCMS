@@ -15,5 +15,6 @@
   <ul class="nav nav-sidebar">
     <li <?php if(curPageURL('assignResource')) echo 'class="active"'?> ><a href="assignResource.php">Assign Resource</a></li>
     <li <?php if(curPageURL('createEvent')) echo 'class="active"'?> ><a href="createEvent.php">Create Event</a></li>
+    <li <?php if(curPageURL('postOnSocialMedia')) echo 'class="active"'?> ><a href="postOnSocialMedia.php">Social Media</a></li>
   </ul>
 </div>
