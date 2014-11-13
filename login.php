@@ -67,9 +67,10 @@ else{
 
     try {
         $user = ParseUser::logIn($username, $password);
-        echo('Loged in');
+        
         // redirect user to correct page
         redirectUser($user);
+        echo('Loged in');
          
     } catch (ParseException $error) {
         // The login failed. Check error to see why.
