@@ -30,6 +30,7 @@ if($method == 'POST') {
 	$incident->set('description', $_POST['incidentDescription']);
 	$incident->set('priority', intval($_POST['priority']));
 	$incident->set('reporter',$reporter);
+	$incident->set('status',"new");
 	$incident->save();
 
 	header('Location: /callCenter/index.php?success=1');
