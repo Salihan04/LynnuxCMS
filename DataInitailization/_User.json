@@ -1,0 +1,47 @@
+{ "results": [
+	{
+        "bcryptPassword": "$2a$10$ZWq64ilzkQkC5TahDy.V.e5.JMqEYy6htWgBFFIVHapSh/jAAFv3y",
+        "createdAt": "2014-09-21T05:58:02.689Z",
+        "email": "andychong2@gmail.com",
+        "objectId": "zDLjrAg46c",
+        "sessionToken": "8EB2zLJW0utezKUxKgGbGJg7r",
+        "updatedAt": "2014-11-13T17:35:10.363Z",
+        "username": "operator"
+    },
+	{
+        "bcryptPassword": "$2a$10$OPNQ5LiuQJxQqBxuruMff.kZLSenWejBRH/WALD47JhkneBaS42pG",
+        "createdAt": "2014-09-21T06:15:59.958Z",
+        "email": "callcenter@cms.com",
+        "objectId": "Om8Ebgx9Cm",
+        "sessionToken": "x7x5lCBSWAIJSX4vaWN6TuB6N",
+        "updatedAt": "2014-11-13T17:35:09.194Z",
+        "username": "callcenter"
+    },
+	{
+        "bcryptPassword": "$2a$10$N98.yz/0/mEXBezxtS4XH./WnPtkX3lB2K2iubwcAeDMkZd9JONiS",
+        "createdAt": "2014-10-23T04:03:38.247Z",
+        "email": "angw0052@e.ntu.edu.sg",
+        "objectId": "R3cI3LbYHn",
+        "sessionToken": "ou0kbl5CexswHvIb40ON6WfCX",
+        "updatedAt": "2014-10-23T04:04:14.297Z",
+        "username": "jacky"
+    },
+	{
+        "bcryptPassword": "$2a$10$4UNjOpP.0I/V3rA4heFXp.c8BGOpC2voWZLGuE/ABSvLGIKydLZ.e",
+        "createdAt": "2014-10-23T10:54:30.351Z",
+        "email": "test@test.com",
+        "objectId": "ivFOXEqV2z",
+        "sessionToken": "4bTuuL5nrNvH9zc7PXscJD8ak",
+        "updatedAt": "2014-11-08T10:13:13.450Z",
+        "username": "test"
+    },
+	{
+        "bcryptPassword": "$2a$10$RPlFdTb/KXknDx2ndYWf6OBW7aj/PqlmOSa3cPeaEaCMnZ4R7urM6",
+        "createdAt": "2014-11-13T05:45:37.560Z",
+        "email": "soelynn007@gmail.com",
+        "objectId": "kQhGFDDwZ3",
+        "sessionToken": "GucLMTBnFepO2XLkT6asOdr7t",
+        "updatedAt": "2014-11-13T05:45:49.238Z",
+        "username": "lynn"
+    }
+] }

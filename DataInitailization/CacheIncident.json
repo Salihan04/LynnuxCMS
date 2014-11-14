@@ -1,0 +1,55 @@
+{ "results": [
+	{
+        "createdAt": "2014-11-14T03:33:38.603Z",
+        "description": "fever",
+        "incidentId": "C0204ymzT5",
+        "location": "1.34831 103.683135",
+        "name": "fever",
+        "objectId": "bZEODXu2Ql",
+        "status": "new",
+        "updatedAt": "2014-11-14T03:33:38.603Z"
+    },
+	{
+        "createdAt": "2014-11-14T03:33:38.643Z",
+        "description": "I don't know why I'm hot. I'm having a high fewer for 5 days. I have taken some medicine but there is not improvement. I'm dying. I need a girl.",
+        "incidentId": "50AcXTCFhV",
+        "location": "1.345838 103.688167",
+        "name": "I'm hot",
+        "objectId": "zkS0wxc6iE",
+        "resource": "Jurong West Hospital",
+        "status": "new",
+        "updatedAt": "2014-11-14T03:33:38.643Z"
+    },
+	{
+        "createdAt": "2014-11-14T03:33:38.658Z",
+        "description": "My roomie is sick. He has fewer, headache, muscle and joint pains. ",
+        "incidentId": "CeY0bPYTBN",
+        "location": "1.345913 103.687158",
+        "name": "Roomie Sick",
+        "objectId": "OCN1qTqJEj",
+        "resource": "Jurong West Hospital",
+        "status": "new",
+        "updatedAt": "2014-11-14T03:33:38.658Z"
+    },
+	{
+        "createdAt": "2014-11-14T03:33:38.718Z",
+        "description": "Fever",
+        "incidentId": "vq6UXTARQH",
+        "name": "Sick",
+        "objectId": "vHOiKMDbeT",
+        "resource": "Jurong West Hospital",
+        "status": "new",
+        "updatedAt": "2014-11-14T03:33:38.812Z"
+    },
+	{
+        "createdAt": "2014-11-14T03:33:38.769Z",
+        "description": "There are three unknown people in my room. All of them wearing yellow shirt. As a result, I'm sick of them. ",
+        "incidentId": "aCaJhMxiK7",
+        "location": "1.345881 103.68924",
+        "name": "Many Sick People in my room",
+        "objectId": "XN5KpcEvii",
+        "resource": "Jurong West Hospital",
+        "status": "new",
+        "updatedAt": "2014-11-14T03:33:38.769Z"
+    }
+] }
